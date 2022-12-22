@@ -10,17 +10,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Roles {
+  ADMIN
+  USER
+}
+
 model Fish {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  // GLOBAL INFORMATIONS
   name           String
   vernacularName String
+
+  // CLASSIFICATION = rang taxinomique
+  kingdom    String @default("N/A")
+  phylum     String
+  class      String
+  order      String
+  infraorder String @default("N/A")
+  family     String
+  genus      String
+
+  // LOCALISATION
+  oceanLocalisation String[]
+
+  // AQUARIOPHILIE
 }
 
 model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  email    String  @unique
-  password String
-  pseudo   String?
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  pseudo    String?
   createdAt DateTime @map("-createdAd") @db.Date
-  
+  role      Roles    @default(USER)
 }
