@@ -13,7 +13,7 @@ export default async function fish(req: NextApiRequest, res: NextApiResponse) {
     switch(method) {
         case "GET" : 
             try{
-                const result = await prisma.fish.findFirst({ where:{ id: req.query.id}});
+                const result = await prisma.fish.findFirst({ where:{ id: req.query.id as string}});
                 res.status(200).json(result);
 
             } catch(err){
@@ -21,9 +21,10 @@ export default async function fish(req: NextApiRequest, res: NextApiResponse) {
             }
             break;
         case "PUT": 
+            //TODO: vérification des informations
             try{
                 const _data = await prisma.fish.update({
-                    where: { id: req.query.id },
+                    where: { id: req.query.id as string},
                     data: req.body
                 })
                 res.status(200).json("Modification en BDD sur : " + _data.id);
@@ -34,7 +35,7 @@ export default async function fish(req: NextApiRequest, res: NextApiResponse) {
 
             break;
         default: 
-            console.log("default")
+            res.status(400).json("error : méthode HTTP interdite.")
             break;
     }
     
