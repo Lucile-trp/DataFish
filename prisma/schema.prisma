@@ -15,12 +15,41 @@ enum Roles {
   USER
 }
 
+enum Oceans {
+  OCEAN_ATLANTIQUE
+  OCEAN_PACIFIQUE
+  OCEAN_INDIEN
+  OCEAN_ARCTIQUE
+  OCEAN_AUSTRAL
+}
+
+enum Uicn {
+  ETEINTE_MONDIAL
+  ETEINTE_SAUVAGE
+  ETEINTE_REGIONAL
+  EN_DANGER_CRITIQUE
+  EN_DANGER
+  VULNERABLE
+  QUASI_MENACEE
+  PREOCCUPATION_MINEURE
+
+  DONNEES_INSUFISANTES
+  NON_APPLICABLE
+  NON_EVALUEE
+
+  NON_RENSEIGNE
+}
+
 model Fish {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   // GLOBAL INFORMATIONS
   name           String
   vernacularName String
+  longevity      Int?
+  picture        String?
+  UICNStatus     Uicn    @default(NON_RENSEIGNE)
+  description    String?
 
   // CLASSIFICATION = rang taxinomique
   kingdom    String @default("N/A")
@@ -31,8 +60,15 @@ model Fish {
   family     String
   genus      String
 
+  // MODE DE VIE
+  sociability    String?
+  temperatureMin Int?
+  temperatureMax Int?
+  depthMax  Int?
+  depthMin  Int?
+
   // LOCALISATION
-  oceanLocalisation String[]
+  oceanLocalisation Oceans[]
 
   // AQUARIOPHILIE
 }
@@ -42,6 +78,6 @@ model User {
   email     String   @unique
   password  String
   pseudo    String?
-  createdAt DateTime @map("-createdAd") @db.Date
+  createdAt DateTime @default(now())
   role      Roles    @default(USER)
 }
