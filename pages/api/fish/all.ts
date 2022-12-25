@@ -11,11 +11,7 @@ export default async function fish(req: NextApiRequest, res: NextApiResponse) {
 
   switch (method) {
     case "GET":
-      const result = await prisma.fish.findMany({
-        // include: {
-        //   oceanLocalisation: true,
-        // },
-      });
+      const result = await prisma.fish.findMany();
       res.status(200).json(result);
       break;
     case "POST":
